@@ -10,10 +10,10 @@ class VuFindInstaller extends LibraryInstaller
     public function getInstallPath(PackageInterface $package)
     {
         $extra = $package->getExtra();
-        if (!$extra->moduleName || $extra->moduleName == '') {
+        /* if (!$extra->moduleName || $extra->moduleName == '') {
             throw new \InvalidArgumentException(print_r($extra, true));
-        }
-        return 'module/'.$extra->moduleName;
+        } */
+        return 'module/Qcovery/'.$extra->moduleName;
     }
 
     public function supports($packageType)
