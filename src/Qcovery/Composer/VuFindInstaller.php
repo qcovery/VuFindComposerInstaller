@@ -14,4 +14,9 @@ class VuFindInstaller extends LibraryInstaller
         }
         return 'module/'.$package->getExtra()->moduleName;
     }
+
+    public function supports($packageType)
+    {
+        return 'qcovery-module' === $packageType;
+    }
 }
