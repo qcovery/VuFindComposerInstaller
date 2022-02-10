@@ -9,10 +9,11 @@ class VuFindInstaller extends LibraryInstaller
 {
     public function getInstallPath(PackageInterface $package)
     {
-        if (!isset($package->getExtra()->moduleName) || $package->getExtra()->moduleName == '') {
+        $extra = $package->getExtra();
+        if (!isset($extra['moduleName']) || $extra['moduleName'] == '') {
             throw new \InvalidArgumentException('Extra field moduleName is not set');
         }
-        return 'module/'.$package->getExtra()->moduleName;
+        return 'module/'.$extra['moduleName'];
     }
 
     public function supports($packageType)
