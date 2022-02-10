@@ -2,6 +2,18 @@
     "name": "qcovery/vufind-composer-installer",
     "description": "Install VuFind packages in the modules directory",
     "require": {
-        "php": ">=7.3"
+      "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+      "composer/composer": "^1.3"
+    },
+    "type": "composer-plugin",
+    "autoload": {
+      "psr-0": {
+        "Qcovery\\Composer": "src/"
+      }
+    },
+    "extra": {
+      "class": "Qcovery\\Composer\\VuFindInstallerPlugin"
     }
 }
