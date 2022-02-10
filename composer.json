@@ -1,0 +1,7 @@
+{
+    "name": "qcovery/vufind-composer-installer",
+    "description": "Install VuFind packages in the modules directory",
+    "require": {
+        "php": ">=7.3"
+    }
+}
