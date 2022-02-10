@@ -11,7 +11,7 @@ class VuFindInstaller extends LibraryInstaller
     {
         $extra = $package->getExtra();
         if (!isset($extra['moduleName']) || $extra['moduleName'] == '') {
-            throw new \InvalidArgumentException('Extra field moduleName is not set');
+            throw new \InvalidArgumentException('Extra field moduleName is not set'.print_r($extra, true));
         }
         return 'module/'.$extra['moduleName'];
     }
