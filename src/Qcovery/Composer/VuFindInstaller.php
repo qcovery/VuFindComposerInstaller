@@ -20,4 +20,15 @@ class VuFindInstaller extends LibraryInstaller
     {
         return 'qcovery-module' === $packageType;
     }
+
+    protected function installCode(PackageInterface $package)
+    {
+        $codeInstalled = parent::installCode($package);
+        if ($codeInstalled) {
+            if (isset($extra['themeName']) && $extra['themeName'] != '') {
+                rename($this->getInstallPath().'/theme/'.$extra['themeName'], 'theme/'.strtolower($extra['themeName']));
+            }
+        }
+        return $codeInstalled;
+    }
 }
