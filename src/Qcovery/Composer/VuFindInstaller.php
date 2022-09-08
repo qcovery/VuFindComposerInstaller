@@ -24,14 +24,14 @@ class VuFindInstaller extends LibraryInstaller
     public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
         $cleanUp = parent::cleanup($type, $package, $prevPackage);
-        if ($cleanUp) {
+        //if ($cleanUp) {
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
                 if (file_exists($this->getInstallPath($package) . '/theme/')) {
                     rename($this->getInstallPath($package) . '/theme/', 'themes/' . strtolower($extra['moduleName']));
                 }
             }
-        }
+        //}
         return $cleanUp;
     }
 }
