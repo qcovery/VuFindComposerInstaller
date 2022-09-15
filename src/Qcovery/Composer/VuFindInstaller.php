@@ -4,6 +4,9 @@ namespace Qcovery\Composer;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Util\Filesystem;
+use React\Promise\PromiseInterface;
 
 class VuFindInstaller extends LibraryInstaller
 {
@@ -21,17 +24,26 @@ class VuFindInstaller extends LibraryInstaller
         return 'qcovery-module' === $packageType;
     }
 
+    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        $installed = parent::install($repo, $package);
+        $this->checkAndInstallTheme($package);
+        return $installed;
+    }
+
     public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
         $cleanUp = parent::cleanup($type, $package, $prevPackage);
-        //if ($cleanUp) {
+        $this->checkAndInstallTheme($package);
+        return $cleanUp;
+    }
+
+    private function checkAndInstallTheme($package) {
+        if (file_exists($this->getInstallPath($package).'/theme/')) {
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
-                if (file_exists($this->getInstallPath($package) . '/theme/')) {
-                    rename($this->getInstallPath($package) . '/theme/', 'themes/' . strtolower($extra['moduleName']));
-                }
+                rename($this->getInstallPath($package).'/theme/', 'theme/'.strtolower($extra['moduleName']));
             }
-        //}
-        return $cleanUp;
+        }
     }
 }
