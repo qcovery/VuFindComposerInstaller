@@ -33,7 +33,7 @@ class VuFindInstaller extends LibraryInstaller
     {
         $installed = parent::install($repo, $package);
         $this->io->writeError('install');
-        SyncHelper::await($this->loop, $installed);
+        SyncHelper::await($this->composer->getLoop(), $installed);
         $this->checkAndInstallTheme($package);
         return $installed;
     }
