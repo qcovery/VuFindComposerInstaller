@@ -32,7 +32,6 @@ class VuFindInstaller extends LibraryInstaller
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         $installed = parent::install($repo, $package);
-        $this->io->writeError('install');
         SyncHelper::await($this->composer->getLoop(), $installed);
         $this->checkAndInstallTheme($package);
         return $installed;
@@ -41,26 +40,15 @@ class VuFindInstaller extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         $update = parent::update($repo, $initial, $target);
-        $this->io->writeError('update');
+        SyncHelper::await($this->composer->getLoop(), $update);
         $this->checkAndInstallTheme($target);
         return $update;
     }
 
-    public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
-    {
-        $cleanUp = parent::cleanup($type, $package, $prevPackage);
-        $this->io->writeError('cleanup');
-        $this->checkAndInstallTheme($package);
-        return $cleanUp;
-    }
-
     private function checkAndInstallTheme($package) {
-        $this->io->writeError('checkAndInstallTheme');
         if (file_exists($this->getInstallPath($package).'/theme/')) {
-            $this->io->writeError('file_exists');
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
-                $this->io->writeError('extra');
                 rename($this->getInstallPath($package).'/theme/', 'themes/'.strtolower($extra['moduleName']));
             }
         }
