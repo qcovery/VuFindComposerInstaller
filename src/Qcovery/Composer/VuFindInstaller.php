@@ -2,6 +2,9 @@
 
 namespace Qcovery\Composer;
 
+use Composer\Composer;
+use Composer\Installer\BinaryInstaller;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
@@ -10,6 +13,12 @@ use React\Promise\PromiseInterface;
 
 class VuFindInstaller extends LibraryInstaller
 {
+    public function __construct(IOInterface $io, Composer $composer, $type = 'library', Filesystem $filesystem = null, BinaryInstaller $binaryInstaller = null)
+    {
+        parent::__construct($io, $composer, $type, $filesystem, $binaryInstaller);
+        $this->downloadManager = new VuFindDownloadManager($io, false, $filesystem);
+    }
+
     public function getInstallPath(PackageInterface $package)
     {
         $extra = $package->getExtra();
@@ -24,7 +33,7 @@ class VuFindInstaller extends LibraryInstaller
         return 'qcovery-module' === $packageType;
     }
 
-    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+    /* public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         $installed = parent::install($repo, $package);
         $this->checkAndInstallTheme($package);
@@ -59,5 +68,5 @@ class VuFindInstaller extends LibraryInstaller
                 rename($this->getInstallPath($package).'/theme/', 'theme/'.strtolower($extra['moduleName']));
             }
         }
-    }
+    } */
 }
