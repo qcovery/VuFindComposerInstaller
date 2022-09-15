@@ -31,6 +31,13 @@ class VuFindInstaller extends LibraryInstaller
         return $installed;
     }
 
+    public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+    {
+        $update = parent::update($repo, $initial, $target);
+        $this->checkAndInstallTheme($target);
+        return $update;
+    }
+
     public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
         $cleanUp = parent::cleanup($type, $package, $prevPackage);
