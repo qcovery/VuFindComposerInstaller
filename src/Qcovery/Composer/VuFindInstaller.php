@@ -10,6 +10,7 @@ use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Util\Filesystem;
+use Composer\Util\SyncHelper;
 use React\Promise\PromiseInterface;
 
 class VuFindInstaller extends LibraryInstaller
@@ -32,6 +33,7 @@ class VuFindInstaller extends LibraryInstaller
     {
         $installed = parent::install($repo, $package);
         $this->io->writeError('install');
+        SyncHelper::await($this->loop, $installed);
         $this->checkAndInstallTheme($package);
         return $installed;
     }
@@ -53,9 +55,6 @@ class VuFindInstaller extends LibraryInstaller
     }
 
     private function checkAndInstallTheme($package) {
-
-        error_log(debug_backtrace());
-
         $this->io->writeError('checkAndInstallTheme');
         if (file_exists($this->getInstallPath($package).'/theme/')) {
             $this->io->writeError('file_exists');
