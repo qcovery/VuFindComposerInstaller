@@ -3,6 +3,7 @@
 namespace Qcovery\Composer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\Installer\BinaryInstaller;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
@@ -27,9 +28,10 @@ class VuFindInstaller extends LibraryInstaller
         return 'qcovery-module' === $packageType;
     }
 
-    /* public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
+    public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         $installed = parent::install($repo, $package);
+        $this->io->writeError('install');
         $this->checkAndInstallTheme($package);
         return $installed;
     }
@@ -37,6 +39,7 @@ class VuFindInstaller extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         $update = parent::update($repo, $initial, $target);
+        $this->io->writeError('update');
         $this->checkAndInstallTheme($target);
         return $update;
     }
@@ -44,23 +47,20 @@ class VuFindInstaller extends LibraryInstaller
     public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
         $cleanUp = parent::cleanup($type, $package, $prevPackage);
+        $this->io->writeError('cleanup');
         $this->checkAndInstallTheme($package);
         return $cleanUp;
     }
 
-    public function isInstalled(InstalledRepositoryInterface $repo, PackageInterface $package)
-    {
-        $isInstalled = parent::isInstalled($repo, $package);
-        $this->checkAndInstallTheme($package);
-        return $isInstalled;
-    }
-
     private function checkAndInstallTheme($package) {
+        $this->io->writeError('checkAndInstallTheme');
         if (file_exists($this->getInstallPath($package).'/theme/')) {
+            $this->io->writeError('file_exists');
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
+                $this->io->writeError('extra');
                 rename($this->getInstallPath($package).'/theme/', 'theme/'.strtolower($extra['moduleName']));
             }
         }
-    } */
+    }
 }
