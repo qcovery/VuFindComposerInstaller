@@ -61,7 +61,7 @@ class VuFindInstaller extends LibraryInstaller
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
                 $this->io->writeError('extra');
-                rename($this->getInstallPath($package).'/theme/', 'theme/'.strtolower($extra['moduleName']));
+                rename($this->getInstallPath($package).'/theme/', 'themes/'.strtolower($extra['moduleName']));
             }
         }
     }
