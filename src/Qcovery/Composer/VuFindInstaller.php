@@ -53,6 +53,9 @@ class VuFindInstaller extends LibraryInstaller
     }
 
     private function checkAndInstallTheme($package) {
+
+        error_log(print_r(get_call_stack(), true));
+
         $this->io->writeError('checkAndInstallTheme');
         if (file_exists($this->getInstallPath($package).'/theme/')) {
             $this->io->writeError('file_exists');
