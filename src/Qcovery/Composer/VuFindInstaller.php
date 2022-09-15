@@ -38,6 +38,13 @@ class VuFindInstaller extends LibraryInstaller
         return $cleanUp;
     }
 
+    public function isInstalled(InstalledRepositoryInterface $repo, PackageInterface $package)
+    {
+        $isInstalled = parent::isInstalled($repo, $package);
+        $this->checkAndInstallTheme($package);
+        return $isInstalled;
+    }
+
     private function checkAndInstallTheme($package) {
         if (file_exists($this->getInstallPath($package).'/theme/')) {
             $extra = $package->getExtra();
