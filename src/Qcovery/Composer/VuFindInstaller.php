@@ -13,12 +13,6 @@ use React\Promise\PromiseInterface;
 
 class VuFindInstaller extends LibraryInstaller
 {
-    public function __construct(IOInterface $io, Composer $composer, $type = 'library', Filesystem $filesystem = null, BinaryInstaller $binaryInstaller = null)
-    {
-        $composer->setDownloadManager(new VuFindDownloadManager($io, false, $filesystem));
-        parent::__construct($io, $composer, $type, $filesystem, $binaryInstaller);
-    }
-
     public function getInstallPath(PackageInterface $package)
     {
         $extra = $package->getExtra();
