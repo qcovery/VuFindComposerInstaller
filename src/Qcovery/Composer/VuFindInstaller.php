@@ -48,23 +48,26 @@ class VuFindInstaller extends LibraryInstaller
     }
 
     private function checkAndInstallTheme($package) {
-        if (file_exists($this->getInstallPath($package).'/theme/')) {
+        $themeDir = $this->getInstallPath($package).'/theme/';
+        if (file_exists($themeDir)) {
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
-                rename($this->getInstallPath($package).'/theme/', 'themes/'.strtolower($extra['moduleName']));
+                rename($themeDir, 'themes/'.strtolower($extra['moduleName']));
             }
         }
     }
 
     private function checkAndAddVuFindConfig($package) {
-        if (file_exists($this->getInstallPath($package).'/vufind/config/')) {
-            $configFiles = scandir($this->getInstallPath($package).'/vufind/config/');
+        $configDir = $this->getInstallPath($package).'/config/vufind/';
+        if (file_exists($configDir)) {
+            $configFiles = scandir($configDir);
             foreach ($configFiles as $configFile) {
                 if (in_array($configFile, ['.', '..'])) {
                     continue;
                 }
-                rename($this->getInstallPath($package).'/vufind/config/'.$configFile, 'config/vufind/'.$configFile);
+                rename($configDir.$configFile, 'config/vufind/'.$configFile);
             }
+            rmdir($configDir);
         }
     }
 }
