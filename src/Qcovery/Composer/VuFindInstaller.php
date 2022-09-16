@@ -34,6 +34,7 @@ class VuFindInstaller extends LibraryInstaller
         $installed = parent::install($repo, $package);
         SyncHelper::await($this->composer->getLoop(), $installed);
         $this->checkAndInstallTheme($package);
+        $this->checkAndAddVuFindConfig($package);
         return $installed;
     }
 
@@ -42,6 +43,7 @@ class VuFindInstaller extends LibraryInstaller
         $update = parent::update($repo, $initial, $target);
         SyncHelper::await($this->composer->getLoop(), $update);
         $this->checkAndInstallTheme($target);
+        $this->checkAndAddVuFindConfig($target);
         return $update;
     }
 
@@ -50,6 +52,18 @@ class VuFindInstaller extends LibraryInstaller
             $extra = $package->getExtra();
             if (isset($extra['moduleName']) && $extra['moduleName'] != '') {
                 rename($this->getInstallPath($package).'/theme/', 'themes/'.strtolower($extra['moduleName']));
+            }
+        }
+    }
+
+    private function checkAndAddVuFindConfig($package) {
+        if (file_exists($this->getInstallPath($package).'/vufind/config/')) {
+            $configFiles = scandir($this->getInstallPath($package).'/vufind/config/');
+            foreach ($configFiles as $configFile) {
+                if (in_array($configFile, ['.', '..'])) {
+                    continue;
+                }
+                rename($this->getInstallPath($package).'/vufind/config/'.$configFile, 'config/vufind/'.$configFile);
             }
         }
     }
