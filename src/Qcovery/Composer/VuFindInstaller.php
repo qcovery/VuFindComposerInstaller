@@ -65,7 +65,7 @@ class VuFindInstaller extends LibraryInstaller
                 if (in_array($configFile, ['.', '..'])) {
                     continue;
                 }
-                rename($configDir.$configFile, 'config/vufind/'.$configFile);
+                rename($configDir.$configFile, 'local/config/vufind/'.$configFile);
             }
             rmdir($configDir);
         }
