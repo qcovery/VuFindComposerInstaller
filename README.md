@@ -1,5 +1,7 @@
 # VuFindComposerInstaller
+This module is used when installing VuFind modules via composer. It helps to install modules, associated themes and configuration files in the correct directories.
 
+## Usage
 Add Qcovery packages to the composer.local.json file of your VuFind code.
 
 ```
